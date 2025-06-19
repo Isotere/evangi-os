@@ -1,0 +1,24 @@
+[package]
+name = "evangi-os"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+bootloader = "0.9"
+
+# the profile used for `cargo build`
+[profile.dev]
+panic = "abort" # disable stack unwinding on panic
+
+# the profile used for `cargo build --release`
+[profile.release]
+panic = "abort" # disable stack unwinding on panic
+
+# https://github.com/rust-osdev/bootimage
+[package.metadata.bootimage]
+# The cargo subcommand that will be used for building the kernel.
+build-command = ["build"]
+# The command invoked with the created bootimage (the "{}" will be replaced
+# with the path to the bootable disk image)
+# Applies to `bootimage run` and `bootimage runner`
+run-command = ["qemu-system-x86_64", "-drive", "format=raw,file={}"]
